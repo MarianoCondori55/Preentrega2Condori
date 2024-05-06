@@ -3,18 +3,13 @@ let toDoContainer = document.getElementById("toDoContainer");
 let inputField = document.getElementById("inputField");
 let tasks = []; //array para guardar las tareas
 
-// Función encargada de guardar las tareas al local storage
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks)); //
-}
-
-// Función para cargar las tareas desde localStorage
+// Función para cargar las tareas en el locasStorage
 function loadTasks() {
   let tasksFromStorage = localStorage.getItem("tasks");
   if (tasksFromStorage) {
-    tasks = JSON.parse(tasksFromStorage);
+    tasks = JSON.parse(tasksFromStorage); //reconvertimos a js
     tasks.forEach((task) => {
-      addTaskToDOM(task); //llamamos ala funcion para cargar lo guardado
+      addTaskToDOM(task); //Llamamos a la funcion de creacion de tareas
     });
   }
 }
@@ -25,6 +20,17 @@ function addTask(taskText) {
   addTaskToDOM(taskText);
   saveTasks();
 }
+
+// Evento del boton Add Task
+addButton.addEventListener("click", function () {
+  let taskText = inputField.value.trim();
+  if (taskText !== "") {
+    addTask(taskText);
+    inputField.value = "";
+  } else {
+    alert("Por favor ingrese una Tarea.");
+  }
+});
 
 // Función para agregar una tarea al DOM
 function addTaskToDOM(taskText) {
@@ -44,16 +50,10 @@ function addTaskToDOM(taskText) {
   });
 }
 
+// Guardamos las tareas al local storage
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks)); //
+}
+
 // Cargar las tareas al cargar la página
 loadTasks();
-
-// Agregar evento click al botón de añadir tarea
-addButton.addEventListener("click", function () {
-  let taskText = inputField.value.trim();
-  if (taskText !== "") {
-    addTask(taskText);
-    inputField.value = "";
-  } else {
-    alert("Por favor ingresa una tarea antes de agregarla.");
-  }
-});
